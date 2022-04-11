@@ -70,7 +70,7 @@ module Facebook
           query = { access_token: access_token }
           query[:appsecret_proof] = app_secret_proof if app_secret_proof
 
-          body = {:recipient=>{"id"=>recipient}}
+          body = {:recipient=>recipient}
 
           binding.pry
 
