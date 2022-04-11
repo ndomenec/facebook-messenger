@@ -3,6 +3,7 @@ require 'facebook/messenger/bot/exceptions'
 require 'facebook/messenger/bot/message_type'
 require 'facebook/messenger/bot/messaging_type'
 require 'facebook/messenger/bot/tag'
+require 'pry'
 
 module Facebook
   module Messenger
@@ -70,6 +71,8 @@ module Facebook
           query[:appsecret_proof] = app_secret_proof if app_secret_proof
 
           body = {:recipient=>{"id"=>recipient}}
+
+          binding.pry
 
           response = post '/release_thread_control',
                           body: JSON.dump(body),
