@@ -36,6 +36,7 @@ module Facebook
         'payment' => Payment,
         'policy_enforcement' => PolicyEnforcement,
         'pass_thread_control' => PassThreadControl,
+        'request_thread_control' => RequestThreadControl,
         'game_play' => GamePlay,
         'reaction' => MessageReaction
       }.freeze
