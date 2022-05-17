@@ -9,8 +9,8 @@ module Facebook
       class RequestThreadControl
         include Facebook::Messenger::Incoming::Common
 
-        def new_owner_app_id
-          @messaging['request_thread_control']['new_owner_app_id']
+        def requested_owner_app_id
+          @messaging['request_thread_control']['requested_owner_app_id']
         end
 
         def metadata

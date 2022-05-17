@@ -70,9 +70,28 @@ module Facebook
           query = { access_token: access_token }
           query[:appsecret_proof] = app_secret_proof if app_secret_proof
 
-          body = {:recipient=>recipient}
+          body = { recipient: recipient }
 
           response = post '/release_thread_control',
+                          body: JSON.dump(body),
+                          format: :json,
+                          query: query
+
+          Facebook::Messenger::Bot::ErrorParser.raise_errors_from(response)
+
+          response.body
+        end
+
+        def pass_thread_control(recipient, target_app_id, page_id:)
+          access_token = config.provider.access_token_for(page_id)
+          app_secret_proof = config.provider.app_secret_proof_for(page_id)
+
+          query = { access_token: access_token }
+          query[:appsecret_proof] = app_secret_proof if app_secret_proof
+
+          body = { recipient: recipient, target_app_id: target_app_id, metadata: "Hello #{target_app_id}, you requested thread control so here it is, have a good day !" }
+
+          response = post '/pass_thread_control',
                           body: JSON.dump(body),
                           format: :json,
                           query: query
