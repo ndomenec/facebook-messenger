@@ -11,6 +11,7 @@ require 'facebook/messenger/incoming/referral'
 require 'facebook/messenger/incoming/payment'
 require 'facebook/messenger/incoming/policy_enforcement'
 require 'facebook/messenger/incoming/pass_thread_control'
+require 'facebook/messenger/incoming/request_thread_control'
 require 'facebook/messenger/incoming/game_play'
 require 'facebook/messenger/incoming/message_reaction'
 
