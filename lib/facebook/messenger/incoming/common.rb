@@ -14,6 +14,7 @@ module Facebook
         #
         def initialize(messaging)
           @messaging = messaging
+          @standby = false
         end
 
         #
