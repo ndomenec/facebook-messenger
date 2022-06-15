@@ -52,11 +52,11 @@ module Facebook
       #
       # @param [Hash] payload A Hash describing a payload from Facebook.
       #
-      def self.parse(payload)
-        return MessageEcho.new(payload) if payload_is_echo?(payload)
+      def self.parse(payload, type)
+        return MessageEcho.new(payload, type) if payload_is_echo?(payload)
 
         EVENTS.each do |event, klass|
-          return klass.new(payload) if payload.key?(event)
+          return klass.new(payload, type) if payload.key?(event)
         end
 
         raise UnknownPayload, payload

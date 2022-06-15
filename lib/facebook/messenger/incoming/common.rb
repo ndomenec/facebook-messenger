@@ -13,9 +13,9 @@ module Facebook
         #
         # @param [Object] messaging Object of message.
         #
-        def initialize(messaging)
+        def initialize(messaging, type)
           @messaging = messaging
-          @standby = false
+          @type = type
         end
 
         #
