@@ -32,7 +32,6 @@ module Facebook
         request_thread_control
         game_play
         reaction
-        standby
       ].freeze
 
       class << self
