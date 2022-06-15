@@ -6,7 +6,7 @@ module Facebook
       #
       module Common
         attr_reader :messaging
-        attr_reader :standby
+        attr_reader :type
 
         #
         # Assign message to instance variable
