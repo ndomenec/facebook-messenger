@@ -101,6 +101,44 @@ module Facebook
           response.body
         end
 
+        def request_thread_control(recipient, page_id:)
+          access_token = config.provider.access_token_for(page_id)
+          app_secret_proof = config.provider.app_secret_proof_for(page_id)
+
+          query = { access_token: access_token }
+          query[:appsecret_proof] = app_secret_proof if app_secret_proof
+
+          body = { recipient: recipient }
+
+          response = post '/request_thread_control',
+                          body: JSON.dump(body),
+                          format: :json,
+                          query: query
+
+          Facebook::Messenger::Bot::ErrorParser.raise_errors_from(response)
+
+          response.body
+        end
+
+        def take_thread_control(recipient, page_id:)
+          access_token = config.provider.access_token_for(page_id)
+          app_secret_proof = config.provider.app_secret_proof_for(page_id)
+
+          query = { access_token: access_token }
+          query[:appsecret_proof] = app_secret_proof if app_secret_proof
+
+          body = { recipient: recipient }
+
+          response = post '/take_thread_control',
+                          body: JSON.dump(body),
+                          format: :json,
+                          query: query
+
+          Facebook::Messenger::Bot::ErrorParser.raise_errors_from(response)
+
+          response.body
+        end
+
         # Register a hook for the given event.
         #
         # @raise [ArgumentError] if received event is not registered.
