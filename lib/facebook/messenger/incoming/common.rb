@@ -6,14 +6,16 @@ module Facebook
       #
       module Common
         attr_reader :messaging
+        attr_reader :type
 
         #
         # Assign message to instance variable
         #
         # @param [Object] messaging Object of message.
         #
-        def initialize(messaging)
+        def initialize(messaging, type)
           @messaging = messaging
+          @type = type
         end
 
         #

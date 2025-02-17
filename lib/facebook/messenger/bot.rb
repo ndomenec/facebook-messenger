@@ -29,6 +29,7 @@ module Facebook
         payment
         policy_enforcement
         pass_thread_control
+        request_thread_control
         game_play
         reaction
       ].freeze
@@ -54,6 +55,82 @@ module Facebook
 
           response = post '/messages',
                           body: JSON.dump(message),
+                          format: :json,
+                          query: query
+
+          Facebook::Messenger::Bot::ErrorParser.raise_errors_from(response)
+
+          response.body
+        end
+
+        def release_thread_control(recipient, page_id:)
+          access_token = config.provider.access_token_for(page_id)
+          app_secret_proof = config.provider.app_secret_proof_for(page_id)
+
+          query = { access_token: access_token }
+          query[:appsecret_proof] = app_secret_proof if app_secret_proof
+
+          body = { recipient: recipient }
+
+          response = post '/release_thread_control',
+                          body: JSON.dump(body),
+                          format: :json,
+                          query: query
+
+          Facebook::Messenger::Bot::ErrorParser.raise_errors_from(response)
+
+          response.body
+        end
+
+        def pass_thread_control(recipient, target_app_id, page_id:)
+          access_token = config.provider.access_token_for(page_id)
+          app_secret_proof = config.provider.app_secret_proof_for(page_id)
+
+          query = { access_token: access_token }
+          query[:appsecret_proof] = app_secret_proof if app_secret_proof
+
+          body = { recipient: recipient, target_app_id: target_app_id, metadata: "Hello #{target_app_id}, you requested thread control so here it is, have a good day !" }
+
+          response = post '/pass_thread_control',
+                          body: JSON.dump(body),
+                          format: :json,
+                          query: query
+
+          Facebook::Messenger::Bot::ErrorParser.raise_errors_from(response)
+
+          response.body
+        end
+
+        def request_thread_control(recipient, page_id:)
+          access_token = config.provider.access_token_for(page_id)
+          app_secret_proof = config.provider.app_secret_proof_for(page_id)
+
+          query = { access_token: access_token }
+          query[:appsecret_proof] = app_secret_proof if app_secret_proof
+
+          body = { recipient: recipient }
+
+          response = post '/request_thread_control',
+                          body: JSON.dump(body),
+                          format: :json,
+                          query: query
+
+          Facebook::Messenger::Bot::ErrorParser.raise_errors_from(response)
+
+          response.body
+        end
+
+        def take_thread_control(recipient, page_id:)
+          access_token = config.provider.access_token_for(page_id)
+          app_secret_proof = config.provider.app_secret_proof_for(page_id)
+
+          query = { access_token: access_token }
+          query[:appsecret_proof] = app_secret_proof if app_secret_proof
+
+          body = { recipient: recipient }
+
+          response = post '/take_thread_control',
+                          body: JSON.dump(body),
                           format: :json,
                           query: query
 
@@ -88,8 +165,8 @@ module Facebook
         #
         # @return pass event and object of callback class to trigger function.
         #
-        def receive(payload)
-          callback = Facebook::Messenger::Incoming.parse(payload)
+        def receive(payload, type)
+          callback = Facebook::Messenger::Incoming.parse(payload, type)
           event = Facebook::Messenger::Incoming::EVENTS.invert[callback.class]
           trigger(event.to_sym, callback)
         end

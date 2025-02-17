@@ -11,6 +11,7 @@ require 'facebook/messenger/incoming/referral'
 require 'facebook/messenger/incoming/payment'
 require 'facebook/messenger/incoming/policy_enforcement'
 require 'facebook/messenger/incoming/pass_thread_control'
+require 'facebook/messenger/incoming/request_thread_control'
 require 'facebook/messenger/incoming/game_play'
 require 'facebook/messenger/incoming/message_reaction'
 
@@ -36,6 +37,7 @@ module Facebook
         'payment' => Payment,
         'policy_enforcement' => PolicyEnforcement,
         'pass_thread_control' => PassThreadControl,
+        'request_thread_control' => RequestThreadControl,
         'game_play' => GamePlay,
         'reaction' => MessageReaction
       }.freeze
@@ -50,11 +52,11 @@ module Facebook
       #
       # @param [Hash] payload A Hash describing a payload from Facebook.
       #
-      def self.parse(payload)
-        return MessageEcho.new(payload) if payload_is_echo?(payload)
+      def self.parse(payload, type)
+        return MessageEcho.new(payload, type) if payload_is_echo?(payload)
 
         EVENTS.each do |event, klass|
-          return klass.new(payload) if payload.key?(event)
+          return klass.new(payload, type) if payload.key?(event)
         end
 
         raise UnknownPayload, payload
